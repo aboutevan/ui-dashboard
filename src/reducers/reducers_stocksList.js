@@ -1,33 +1,31 @@
 import axios from 'axios';
 
-const apiKey = 'AHT15VI6PBK5AF7Ai';
-
 const baseUrl = 'https://api.iextrading.com/1.0';
 
-// const url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_INTRADAY&symbol=BTC&market=CNY&apikey=${apiKey}/`;
 const url = `${baseUrl}/ref-data/symbols`;
 
 export const types = {
-  REQUEST_DATA: 'REQUEST_DATA',
-  RECEIVE_DATA: 'RECEIVE_DATA',
-  RESET_DATA: 'RESET_DATA',
+  REQUEST_STOCK_LIST: 'REQUEST_STOCK_LIST',
+  RECEIVE_STOCK_LIST: 'RECEIVE_STOCK_LIST',
+  RESET_DATA: 'RESET_DATA'
 };
 
 export const initialState = {
   isFetching: false,
   didReset: false,
-  entities: [],
+  entities: []
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.REQUEST_DATA:
+    case types.REQUEST_STOCK_LIST:
+      console.log(action.type);
       return Object.assign({}, state, {
         isFetching: true,
-        didReset: false,
+        didReset: false
       });
 
-    case types.RECEIVE_DATA:
+    case types.RECEIVE_STOCK_LIST:
       return Object.assign({}, state, {
         isFetching: false,
         didReset: false,
@@ -37,28 +35,25 @@ export default (state = initialState, action) => {
     default:
       return state;
   }
-}
+};
 
 const receiveData = data => {
   return {
-    type: types.RECEIVE_DATA,
+    type: types.RECEIVE_STOCK_LIST,
     data
-  }
-}
+  };
+};
 
 export const actions = {
-
-  requestData:  () => {
+  requestData: () => {
     return dispatch => {
-      
       dispatch({
-        type: types.REQUEST_DATA,
-      })
+        type: types.REQUEST_STOCK_LIST
+      });
 
-      return axios.get(url)
-        .then(response => {
-          dispatch(receiveData(response.data));
-        });
-    }
+      return axios.get(url).then(response => {
+        dispatch(receiveData(response.data));
+      });
+    };
   }
-}
+};

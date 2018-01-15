@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { actions } from '../../reducers/reducers_stocksList';
+import { actions as currentStockActions } from '../../reducers/reducers_currentStock';
 
-const {
-  requestData
-} = actions;
+const { requestData } = actions;
+const { setCurrentStock, requestCurrentStock } = currentStockActions;
 
 class StocksListContainer extends React.Component {
   static propTypes: {
@@ -18,14 +18,10 @@ class StocksListContainer extends React.Component {
   }
 
   render() {
-    console.log('From container: ', this.props.entities);
-    return (
-      <div>
-        {this.props.children(this.props)}
-      </div>
-      )
+    console.log('From container: ', this.props);
+    return <div>{this.props.children(this.props)}</div>;
   }
-};
+}
 
 // const StocksListContainer = wrappedComponent => props => {
 //   return (
@@ -39,10 +35,19 @@ const mapStateToProps = state => ({
   isFetching: state.stocksList.isFetching,
   didReset: state.stocksList.didReset,
   entities: state.stocksList.entities,
+  currentStock: state.currentStock.currentStock
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  requestData,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      requestData,
+      setCurrentStock,
+      requestCurrentStock
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(StocksListContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  StocksListContainer
+);

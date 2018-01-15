@@ -7,18 +7,28 @@ class StocksList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.renderList = this.renderList.bind(this);
-  };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(stock) {
+    this.props.requestCurrentStock(stock.symbol.toLowerCase());
+    this.props.setCurrentStock(stock);
+  }
 
   renderList() {
     return (
-      <ListGroup>{
-        this.props.entities.map(entity =>{
+      <ListGroup>
+        {this.props.entities.map(entity => {
           return (
-            <ListGroupItem key={entity.symbol}>{entity.name}</ListGroupItem>
+            <ListGroupItem
+              onClick={() => this.handleClick(entity)}
+              key={entity.symbol}
+            >
+              {entity.name}
+            </ListGroupItem>
           );
-        })
-      }</ListGroup>
+        })}
+      </ListGroup>
     );
   }
 
@@ -27,19 +37,19 @@ class StocksList extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className={`stock-list`}>
-          {this.props.isFetching ?
-            <div>
-              Please Wait
-            </div>
-            :
-            this.renderList()
-          }
-          <button onClick={this.props.requestData} disabled={this.props.isFetching}>Fetch Again</button>
+        {this.props.isFetching ? <div>Please Wait</div> : this.renderList()}
+        <button
+          onClick={this.props.requestData}
+          disabled={this.props.isFetching}
+        >
+          Fetch Again
+        </button>
       </div>
     );
-  };
+  }
 }
 
 export default StocksList;

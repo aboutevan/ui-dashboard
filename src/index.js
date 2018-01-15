@@ -13,14 +13,14 @@ import './index.css';
 const target = document.querySelector('#root');
 
 ReactDOM.render(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <div>
-          <App />
-        </div>
-      </ConnectedRouter>
-    </Provider>,
-    target
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <div>
+        <App />
+      </div>
+    </ConnectedRouter>
+  </Provider>,
+  target
 );
 
 // ReactDOM.render(<App />, document.getElementById('root'));

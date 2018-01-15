@@ -2,7 +2,7 @@ export const types = {
   INCREMENT_REQUESTED: 'counter/INCREMENT_REQUESTED',
   INCREMENT: 'counter/INCREMENT',
   DECREMENT_REQUESTED: 'counter/DECREMENT_REQUESTED',
-  DECREMENT: 'counter/DECREMENT',
+  DECREMENT: 'counter/DECREMENT'
 };
 
 export const initialState = {
@@ -10,7 +10,6 @@ export const initialState = {
   isIncrementing: false,
   isDecrementing: false
 };
-
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -43,13 +42,10 @@ export default (state = initialState, action) => {
     default:
       return state;
   }
-}
-
-
+};
 
 export const actions = {
-
-  increment: (foo) => {
+  increment: foo => {
     // Thunk middleware handles action creators that return functions
     // It passes the dispatch method as an argument to the function
     // allowing it to dispatch actions itself
@@ -61,19 +57,19 @@ export const actions = {
       // this action type could be defined elsewhere
       dispatch({
         type: types.INCREMENT_REQUESTED
-      })
+      });
 
       dispatch({
         type: types.INCREMENT
-      })
-    }
+      });
+    };
   },
 
   incrementAsync: () => {
     return dispatch => {
       dispatch({
         type: types.INCREMENT_REQUESTED
-      })
+      });
 
       // could be async call
       // return fetch('reddit.com/api')
@@ -92,35 +88,34 @@ export const actions = {
       return setTimeout(() => {
         dispatch({
           type: types.INCREMENT
-        })
-      }, 3000)
-    }
+        });
+      }, 3000);
+    };
   },
 
   decrement: () => {
     return dispatch => {
       dispatch({
         type: types.DECREMENT_REQUESTED
-      })
+      });
 
       dispatch({
         type: types.DECREMENT
-      })
-    }
+      });
+    };
   },
 
   decrementAsync: () => {
     return dispatch => {
       dispatch({
         type: types.DECREMENT_REQUESTED
-      })
+      });
 
       return setTimeout(() => {
         dispatch({
           type: types.DECREMENT
-        })
-      }, 3000)
-    }
+        });
+      }, 3000);
+    };
   }
-
 };
