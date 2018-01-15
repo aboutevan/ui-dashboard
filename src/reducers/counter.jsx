@@ -45,10 +45,20 @@ export default (state = initialState, action) => {
   }
 }
 
+
+
 export const actions = {
 
-  increment: () => {
+  increment: (foo) => {
+    // Thunk middleware handles action creators that return functions
+    // It passes the dispatch method as an argument to the function
+    // allowing it to dispatch actions itself
+
     return dispatch => {
+      // first dispatch: the app state is updated
+      // to be aware the API call is starting
+
+      // this action type could be defined elsewhere
       dispatch({
         type: types.INCREMENT_REQUESTED
       })
@@ -64,6 +74,20 @@ export const actions = {
       dispatch({
         type: types.INCREMENT_REQUESTED
       })
+
+      // could be async call
+      // return fetch('reddit.com/api')
+      //  .then(
+      //    response => response.json(),
+      //    // DO NOT USE CATCH
+      //    error => console.log(error)
+      //  )
+      //  .then(json =>
+      //  // CAN DISPATCH HERE MANY TIMES
+      //  update the app with results of API call
+      //
+      //  dispatch(actionToCallAfterApi())
+      //  )
 
       return setTimeout(() => {
         dispatch({
