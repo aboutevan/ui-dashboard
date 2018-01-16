@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import counter from './counter';
+import counter from './reducers_counter';
 import stocksList from './reducers_stocksList';
 import currentStock from './reducers_currentStock';
 

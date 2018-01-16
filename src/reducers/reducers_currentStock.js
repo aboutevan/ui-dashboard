@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { findIndex } from 'lodash';
+import { find, findIndex } from 'lodash';
 const baseUrl = 'https://api.iextrading.com/1.0';
-const logoUrl = `${baseUrl}/price/`;
+// const logoUrl = `${baseUrl}/price/`;
 
 export const types = {
   SET_CURRENT_STOCK: 'SET_CURRENT_STOCK',
@@ -11,7 +11,7 @@ export const types = {
 };
 
 export const intialState = {
-  currentStock: {},
+  currentStock: null,
   isFetchingStock: false,
   cachedEntities: []
 };
@@ -19,7 +19,6 @@ export const intialState = {
 export default (state = intialState, action) => {
   switch (action.type) {
     case types.SET_CURRENT_STOCK:
-      console.log(action.stock);
       // check if exists
       let stockCached =
         findIndex(state.cachedEntities, { symbol: action.stock.symbol }) > -1;
@@ -27,19 +26,15 @@ export default (state = intialState, action) => {
       // copy the existing array
       let cachedCopy = state.cachedEntities.slice();
 
-      const stockObj = {
-        // id: action.stock.iexId,
-        chart: action.stock.chart,
-        symbol: action.stock.symbol,
-        name: action.stock.companyName
-      };
-
       if (!stockCached) {
-        cachedCopy.push(stockObj);
+        cachedCopy.push(action.stock);
       }
 
       return Object.assign({}, state, {
-        currentStock: stockObj,
+        currentStock: find(
+          cachedCopy,
+          obj => obj.symbol === action.stock.symbol
+        ),
         cachedEntities: cachedCopy
       });
 
@@ -66,6 +61,7 @@ export default (state = intialState, action) => {
 };
 
 const setCurrentStock = stock => {
+  console.log('setCurrentStock');
   return {
     type: types.SET_CURRENT_STOCK,
     stock
@@ -73,22 +69,35 @@ const setCurrentStock = stock => {
 };
 
 const getStockData = (symbol, dispatch) => {
-  return axios.get(`${baseUrl}/stock/${symbol}/quote/`).then(response =>
-    axios.get(`${baseUrl}/stock/${symbol}/chart/6m`).then(chart => {
-      const stockObj = response.data;
+  let stockObj = {
+    chart: {},
+    stats: {}
+  };
 
-      stockObj.chart = {};
-      stockObj.chart['1m'] = chart.data;
-
+  return axios
+    .get(`${baseUrl}/stock/${symbol}/quote/`)
+    .then(response => {
+      stockObj = { ...stockObj, ...response.data };
+      return axios.get(`${baseUrl}/stock/${symbol}/chart/3m`);
+    })
+    .then(response => {
+      // stockObj.chart['3m'] = response.data;
+      stockObj = {
+        ...stockObj,
+        chart: {
+          '3m': response.data
+        }
+      };
+      return axios.get(`${baseUrl}/stock/${symbol}/stats`);
+    })
+    .then(response => {
+      stockObj.stats = response.data;
       dispatch(setCurrentStock(stockObj));
       dispatch({
         type: types.RECEIVED_CURRENT_STOCK
       });
-    })
-  );
+    });
 };
-
-const getStockChart = (symbol, dispatch) => {};
 
 export const actions = {
   setCurrentStock: stock => {
@@ -104,7 +113,7 @@ export const actions = {
       const cachedEntities = getState().currentStock.cachedEntities;
 
       if (findIndex(cachedEntities, { symbol }) > -1) {
-        setCurrentStock(stock);
+        dispatch(setCurrentStock(stock));
       } else {
         dispatch({
           type: types.REQUEST_CURRENT_STOCK

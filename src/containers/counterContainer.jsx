@@ -2,8 +2,8 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { actions } from '../../reducers/counter';
-import Counter from '../../components/counter/';
+import { actions } from '../reducers/reducers_counter';
+import Counter from '../components/counter/';
 
 const { increment, incrementAsync, decrement, decrementAsync } = actions;
 

@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { actions } from '../../reducers/reducers_stocksList';
-import { actions as currentStockActions } from '../../reducers/reducers_currentStock';
+import { actions } from '../reducers/reducers_stocksList';
+import { actions as currentStockActions } from '../reducers/reducers_currentStock';
 
 const { requestData } = actions;
 const { setCurrentStock, requestCurrentStock } = currentStockActions;
@@ -13,9 +13,6 @@ class StocksListContainer extends React.Component {
   static propTypes: {
     children: PropTypes.func.isRequired
   };
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return <div>{this.props.children(this.props)}</div>;
