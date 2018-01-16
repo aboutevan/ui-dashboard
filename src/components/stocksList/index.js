@@ -11,8 +11,7 @@ class StocksList extends React.Component {
   }
 
   handleClick(stock) {
-    this.props.requestCurrentStock(stock.symbol.toLowerCase());
-    this.props.setCurrentStock(stock);
+    this.props.requestCurrentStock(stock);
   }
 
   renderList() {
@@ -37,7 +36,6 @@ class StocksList extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className={`stock-list`}>
         {this.props.isFetching ? <div>Please Wait</div> : this.renderList()}

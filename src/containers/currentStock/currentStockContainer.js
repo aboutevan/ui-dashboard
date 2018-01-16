@@ -14,6 +14,7 @@ class CurrentStockContainer extends Component {
 
   constructor(props) {
     super(props);
+    console.log(props);
   }
 
   render() {
@@ -22,6 +23,7 @@ class CurrentStockContainer extends Component {
 }
 
 const mapStateToProps = state => ({
+  isFetchingStock: state.currentStock.isFetchingStock,
   currentStock: state.currentStock.currentStock,
   cachedEntities: state.currentStock.cachedEntities
 });

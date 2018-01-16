@@ -18,7 +18,6 @@ class StocksListContainer extends React.Component {
   }
 
   render() {
-    console.log('From container: ', this.props);
     return <div>{this.props.children(this.props)}</div>;
   }
 }

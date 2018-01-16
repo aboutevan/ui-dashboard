@@ -5,7 +5,7 @@ import CurrentStockContainer from '../../containers/currentStock/currentStockCon
 
 import StocksList from '../stocksList';
 
-import ActiveStock from '../activeStock';
+import CurrentStock from '../currentStock';
 
 const Home = props => (
   <div>
@@ -22,7 +22,7 @@ const Home = props => (
     </StocksListContainer>
 
     <CurrentStockContainer>
-      {data => <ActiveStock {...data} />}
+      {data => <CurrentStock {...data} />}
     </CurrentStockContainer>
   </div>
 );
